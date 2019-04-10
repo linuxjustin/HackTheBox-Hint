@@ -1,0 +1,9 @@
+we creat a wordlist > we grap the website words using cewl -w pw http://10.10.10.150
+
+we got the password Curling2018!
+
+username Floris 
+
+got ssh pass 5d<wdCbdZu)|hChXll
+
+xxd -r password_backup > s  

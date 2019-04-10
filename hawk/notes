@@ -1,0 +1,5 @@
+bruteforce-salted-openssl -t 8 -f /root/Desktop/desk1/rockyou.txt -d sha256 file.file.enc
+
+openssl aes-256-cbc -d -in file.file.enc -out decode
+
+

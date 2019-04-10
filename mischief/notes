@@ -1,0 +1,22 @@
+firest snmp 161 port open
+
+we enumurate the snmap with
+snmpwalk -v -2c -c public 10.10.10.92
+
+we got user name and passwrd with http server
+
+we login and got some password
+
+we try to enumurate snmp ipv6
+
+we got ipv6 ip 
+
+and nmap to ipv6 we got 80 
+
+try to login username administrator pass we found
+
+we using python reverse shell to get victim reverse shell
+
+we got the machine but one user access
+
+

